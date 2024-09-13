@@ -26,8 +26,15 @@ doctrine:
 when@test:
     doctrine:
         dbal:
-            # "TEST_TOKEN" is typically set by ParaTest
-            dbname_suffix: '_test%env(default::TEST_TOKEN)%'
+            url: '%env(resolve:DATABASE_TEST_URL)%'
+            driver: 'pdo_sqlite'
+#            url: '%env(resolve:DATABASE_URL)%'
+            dbname_suffix: '_test'  # Используем отдельную базу для тестов
+            memory: true
+        orm:
+            metadata_cache_driver: null
+            query_cache_driver: null
+            result_cache_driver: null
 
 when@prod:
     doctrine:
