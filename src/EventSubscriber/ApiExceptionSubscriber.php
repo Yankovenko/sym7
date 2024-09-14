@@ -41,10 +41,6 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
 
         $response = new JsonResponse(null, 500);
         $throw = $event->getThrowable();
-        $data = [
-            'status' => 'error',
-            'message' => $throw->getMessage(),
-        ];
 
         if ($throw instanceof HttpException) {
             $response->setStatusCode($throw->getStatusCode());
@@ -61,6 +57,12 @@ class ApiExceptionSubscriber implements EventSubscriberInterface
         if ($throw instanceof NotFoundExceptionInterface) {
             $response->setStatusCode(404);
         }
+
+        $data = [
+            'code' => $response->getStatusCode(),
+            'status' => 'error',
+            'message' => $throw->getMessage(),
+        ];
 
         if ($this->debug) {
             do {
